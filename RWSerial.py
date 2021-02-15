@@ -1,4 +1,3 @@
-
 import serial
 import time
 import json 
@@ -13,28 +12,20 @@ def writeSerial():
     print("send: "+ Text)
 
 def readSerial():
-    # global first_round
-    # if first_round:
-    #     for i in range(5):
-    #         print(arduino1.readline())
-    #         first_round = False
     Text = arduino1.readline()
     Text = Text.decode()
-    # Text = json.loads(Text.decode())
+    Text = json.loads(Text.decode())
     return Text
-    # if Text[0] == "{":
-    #     Text = json.loads(Text.decode(encoding='UTF-8'))
-    #     return Text
-    # else:
-    #     print("fail")
-    #     readSerial()
-        
 
+def doSomething():
+    pass
+        
 
 if __name__ == "__main__":
     while True:
         if arduino1.isOpen():
             try:
+                doSomething()
                 writeSerial()
                 time.sleep(0.5)
                 print("get:  " + readSerial())
