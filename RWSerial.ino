@@ -11,12 +11,12 @@ void loop() {
   if (Serial.available()) {
   deserializeJson(doc, Serial);
   //Mach was damit
-  //doc = doSomething(doc);
+  doc = doSomething(doc);
   //Senden
   serializeJson(doc, Serial);
   Serial.println();
   }
-  doc = doSomething(doc);
+  // doc = doSomething(doc);
 } 
 
 DynamicJsonDocument doSomething (JsonDocument& Values){

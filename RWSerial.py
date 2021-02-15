@@ -2,11 +2,9 @@ import serial
 import time
 import json 
 
-arduino1 = serial.Serial(port='COM6', baudrate=9600, timeout=1)
+arduino1 = serial.Serial(port='COM13', baudrate=9600, timeout=1)
 
-
-def writeSerial():
-    Text = {"Geschwindigkeit": [1000, 10, 30], "Richtung":[1,1,-1]}
+def writeSerial(Text):
     Text = json.dumps(Text)
     arduino1.write(Text.encode(encoding='UTF-8'))
     print("send: "+ Text)
@@ -14,26 +12,25 @@ def writeSerial():
 def readSerial():
     Text = arduino1.readline()
     Text = Text.decode()
-    Text = json.loads(Text.decode())
-    return Text
+    try:
+        Text = json.loads(Text)
+        return Text
+    except:
+        return False
 
-def doSomething():
-    pass
+def doSomething(i):
+    Text = {"Geschwindigkeit": [1000, i*12, i], "Richtung":[1,1,-1]}
+    return Text
         
 
 if __name__ == "__main__":
+    i = 0
     while True:
         if arduino1.isOpen():
-            try:
-                doSomething()
-                writeSerial()
-                time.sleep(0.5)
-                print("get:  " + readSerial())
-                time.sleep(0.5)
-            except:
-                print("Fehler")
-                Abbruch = input("Abbruch?")
-                if Abbruch == "JA":
-                    break
+            Text = doSomething(i)
+            writeSerial(Text)                
+            print("get:  " + str(readSerial()))
+            time.sleep(1)
         else:
             print("Nicht verbunden")
+        i += 1
